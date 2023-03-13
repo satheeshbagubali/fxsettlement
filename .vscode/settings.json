@@ -1,0 +1,5 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/a352e65d-bdb7-4429-82e6-f51bde0dccfa/resourceGroups/fxsettling/providers/Microsoft.Web/sites/fxsettling",
+    "appService.deploySubpath": "\\build",
+    
+}
