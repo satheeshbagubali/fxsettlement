@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { DataGrid } from '@material-ui/data-grid'
+import { darken, lighten, styled } from '@mui/material/styles';
 import { clsx } from 'clsx'
 
 
@@ -7,7 +8,7 @@ import { clsx } from 'clsx'
 const columns: GridColDef[] = [
   {
     field: 'id',
-    headerClassName: 'gridHeader',
+    headerClassName: 'table-header-background-color',
     headerAlign: 'center',
     headerName: 'ID' ,
     type: 'number',
@@ -22,20 +23,131 @@ const columns: GridColDef[] = [
   },
   {
     field: 'title',
-    headerClassName: 'gridHeader',
+    headerClassName: 'table-header-background-color',
     headerAlign: 'center',
     headerName: 'Title' ,
+    type: 'string',
     width: 300 ,
+
   },
   {
     field: 'body',
-    headerClassName: 'gridHeader',
+    headerClassName: 'table-header-background-color',
     headerAlign: 'center',
     headerName: 'Body' ,
     width: 600 
   },
 
 ];
+
+
+const getBackgroundColor = (color: string, mode: string) =>
+  mode === 'dark' ? darken(color, 0.7) : lighten(color, 0.7);
+
+const getHoverBackgroundColor = (color: string, mode: string) =>
+  mode === 'dark' ? darken(color, 0.6) : lighten(color, 0.6);
+
+const getSelectedBackgroundColor = (color: string, mode: string) =>
+  mode === 'dark' ? darken(color, 0.5) : lighten(color, 0.5);
+
+const getSelectedHoverBackgroundColor = (color: string, mode: string) =>
+  mode === 'dark' ? darken(color, 0.4) : lighten(color, 0.4);
+
+const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
+  '& .super-app-theme--1': {
+    backgroundColor: getBackgroundColor(theme.palette.info.main, theme.palette.mode),
+    '&:hover': {
+      backgroundColor: getHoverBackgroundColor(
+        theme.palette.info.main,
+        theme.palette.mode,
+      ),
+    },
+    '&.Mui-selected': {
+      backgroundColor: getSelectedBackgroundColor(
+        theme.palette.info.main,
+        theme.palette.mode,
+      ),
+      '&:hover': {
+        backgroundColor: getSelectedHoverBackgroundColor(
+          theme.palette.info.main,
+          theme.palette.mode,
+        ),
+      },
+    },
+  },
+  '& .super-app-theme--2': {
+    backgroundColor: getBackgroundColor(
+      theme.palette.success.main,
+      theme.palette.mode,
+    ),
+    '&:hover': {
+      backgroundColor: getHoverBackgroundColor(
+        theme.palette.success.main,
+        theme.palette.mode,
+      ),
+    },
+    '&.Mui-selected': {
+      backgroundColor: getSelectedBackgroundColor(
+        theme.palette.success.main,
+        theme.palette.mode,
+      ),
+      '&:hover': {
+        backgroundColor: getSelectedHoverBackgroundColor(
+          theme.palette.success.main,
+          theme.palette.mode,
+        ),
+      },
+    },
+  },
+  '& .super-app-theme--3': {
+    backgroundColor: getBackgroundColor(
+      theme.palette.warning.main,
+      theme.palette.mode,
+    ),
+    '&:hover': {
+      backgroundColor: getHoverBackgroundColor(
+        theme.palette.warning.main,
+        theme.palette.mode,
+      ),
+    },
+    '&.Mui-selected': {
+      backgroundColor: getSelectedBackgroundColor(
+        theme.palette.warning.main,
+        theme.palette.mode,
+      ),
+      '&:hover': {
+        backgroundColor: getSelectedHoverBackgroundColor(
+          theme.palette.warning.main,
+          theme.palette.mode,
+        ),
+      },
+    },
+  },
+  '& .super-app-theme--Rejected': {
+    backgroundColor: getBackgroundColor(
+      theme.palette.error.main,
+      theme.palette.mode,
+    ),
+    '&:hover': {
+      backgroundColor: getHoverBackgroundColor(
+        theme.palette.error.main,
+        theme.palette.mode,
+      ),
+    },
+    '&.Mui-selected': {
+      backgroundColor: getSelectedBackgroundColor(
+        theme.palette.error.main,
+        theme.palette.mode,
+      ),
+      '&:hover': {
+        backgroundColor: getSelectedHoverBackgroundColor(
+          theme.palette.error.main,
+          theme.palette.mode,
+        ),
+      },
+    },
+  },
+}));
 
 
 const DataTable = () => {
@@ -56,10 +168,11 @@ const DataTable = () => {
 
   return (
     <div style={{ height: 700, width: '100%' }}>
-      <DataGrid
+      <StyledDataGrid
         rows={tableData}
         columns={columns}
-        pageSize={12}
+        getRowClassName={(params) => `super-app-theme--${params.row.id}`}
+        pageSize={10}
         checkboxSelection
         onSelectionModelChange={({ selectionModel }) => {
           const rowIds = selectionModel.map(rowId => parseInt(String(rowId), 10));

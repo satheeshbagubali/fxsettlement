@@ -40,8 +40,9 @@ const Form = () => {
     
   };
   return (
+    
     <div class="container" >
-      <b>FX Trade Details</b>
+    <h1>FX Trade Details</h1>  
     <form onSubmit={handleSubmit}>
       <div class="form-group">
       <Grid container alignItems="center" direction="column">
