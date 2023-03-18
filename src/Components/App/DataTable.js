@@ -1,12 +1,42 @@
 import React, { useState, useEffect } from 'react'
 import { DataGrid } from '@material-ui/data-grid'
+import { clsx } from 'clsx'
 
 
-const columns = [
-  { field: 'id', headerName: 'ID' },
-  { field: 'title', headerName: 'Title', width: 300 },
-  { field: 'body', headerName: 'Body', width: 600 }
-]
+
+const columns: GridColDef[] = [
+  {
+    field: 'id',
+    headerClassName: 'gridHeader',
+    headerAlign: 'center',
+    headerName: 'ID' ,
+    type: 'number',
+    width: 100 ,
+
+    cellClassName: (params: GridCellParams<number>) =>
+    clsx('gridHeader', {
+      gridHeader: params.value < 0,
+      gridaltHeader: params.value > 4,
+    }),
+
+  },
+  {
+    field: 'title',
+    headerClassName: 'gridHeader',
+    headerAlign: 'center',
+    headerName: 'Title' ,
+    width: 300 ,
+  },
+  {
+    field: 'body',
+    headerClassName: 'gridHeader',
+    headerAlign: 'center',
+    headerName: 'Body' ,
+    width: 600 
+  },
+
+];
+
 
 const DataTable = () => {
 
@@ -37,6 +67,7 @@ const DataTable = () => {
           setDeletedRows(rowsToDelete);
           console.log(deletedRows);
         }}
+        
       />
     </div>
   )

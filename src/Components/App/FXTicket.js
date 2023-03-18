@@ -11,6 +11,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Slider from "@material-ui/core/Slider";
 import Button from "@material-ui/core/Button";
 import './fxticket.css';
+
 const defaultValues = {
   name: "",
   age: "",
@@ -36,11 +37,14 @@ const Form = () => {
     event.preventDefault();
     console.log('Hello Satheesh');
     console.log(formValues);
+    
   };
   return (
+    <div class="container" >
+      <b>FX Trade Details</b>
     <form onSubmit={handleSubmit}>
-      <div class="center">
-      <Grid container alignItems="center" justify="center" direction="column">
+      <div class="form-group">
+      <Grid container alignItems="center" direction="column">
         <Grid item>
           <TextField
             id = "cp-input"
@@ -50,6 +54,8 @@ const Form = () => {
             variant="outlined"
             value = {formValues.counterparty}
             onChange = {handleInputChange}
+            style={{ width: "250px", margin: "10px" }}
+            color = "red"
           />
          </Grid>
          <Grid item>
@@ -61,6 +67,7 @@ const Form = () => {
             variant="outlined"
             value={formValues.currency}
             onChange={handleInputChange}
+            style={{ width: "250px", margin: "10px" }}
           />
         </Grid>
         <Grid item>
@@ -72,6 +79,7 @@ const Form = () => {
             variant="outlined"
             value={formValues.cpcurrency}
             onChange={handleInputChange}
+            style={{ width: "250px", margin: "10px" }}
           />
         </Grid>
         <Grid item> 
@@ -83,6 +91,7 @@ const Form = () => {
             variant="outlined"
             value={formValues.spotrate}
             onChange={handleInputChange}
+            style={{ width: "250px", margin: "10px" }}
           />
         </Grid>
         <Grid item>
@@ -94,6 +103,7 @@ const Form = () => {
             variant="outlined"
             value = {formValues.tradedate}
             onChange = {handleInputChange}
+            style={{ width: "250px", margin: "10px" }}
             />
         </Grid>    
         <Grid item>
@@ -105,6 +115,7 @@ const Form = () => {
             variant="outlined"
             value = {formValues.valuedate}
             onChange = {handleInputChange}
+            style={{ width: "250px", margin: "10px" }}
             />
         </Grid>    
         <Grid item> 
@@ -116,6 +127,7 @@ const Form = () => {
             variant="outlined"
             value={formValues.precision}
             onChange={handleInputChange}
+            style={{ width: "250px", margin: "10px" }}
           />
         </Grid>
 
@@ -128,6 +140,7 @@ const Form = () => {
             variant="outlined"
             value={formValues.amount}
             onChange={handleInputChange}
+            style={{ width: "250px", margin: "10px" }}
           />
         </Grid>
 
@@ -135,7 +148,7 @@ const Form = () => {
          <table>
           <tr>
             <td> 
-              Tenor
+              
             </td>  
           <td>
             <FormControl>
@@ -144,7 +157,9 @@ const Form = () => {
                 variant="outlined"
                 value={formValues.tenor}
                 onChange={handleInputChange}
+                style={{ width: "250px", margin: "10px" }}
               >
+
                 <MenuItem key="Spot" value="Spot">
                   Spot
                 </MenuItem>
@@ -164,7 +179,7 @@ const Form = () => {
          <table>
           <tr>
             <td> 
-              Currency Pair
+              
             </td>  
           <td>
             <FormControl>
@@ -173,6 +188,7 @@ const Form = () => {
                 variant="outlined"
                 value={formValues.currencypair}
                 onChange={handleInputChange}
+                style={{ width: "250px", margin: "10px" }}
               >
                 <MenuItem key="GBPUSD" value="GBPUSD">
                   GBPUSD
@@ -201,6 +217,7 @@ const Form = () => {
       </Grid>
       </div>
     </form>
+    </div>
   );
 };
 export default Form;

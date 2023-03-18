@@ -83,7 +83,7 @@ export default function App() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <b>FX Trade Ticket</b>
+        <b></b>
         <Form/>     
       </TabPanel>
       <TabPanel value={value} index={1}>
