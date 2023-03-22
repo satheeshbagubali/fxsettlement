@@ -28,6 +28,11 @@ const columns: GridColDef[] = [
     headerName: 'Title' ,
     type: 'string',
     width: 300 ,
+    cellClassName: (params: GridCellParams<string>) =>
+    clsx('gridHeader2', {
+      gridHeader: params.value == 'qui est esse',
+      gridaltHeader: params.value == 'nesciunt quas odio',
+    }),
 
   },
   {
@@ -159,7 +164,9 @@ const DataTable = () => {
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/posts")
+    //fetch("https://dltfxsettlements.azurewebsites.net/TransactionService/listUnsettledTrades")
       .then((data) => data.json())
+      
       .then((data) => setTableData(data))
 
   }, [])
