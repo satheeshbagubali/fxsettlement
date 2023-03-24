@@ -42,7 +42,8 @@ jobs:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
         cache-dependency-path: ./my-app/package-lock.json
-
+    - name: npm init
+      run: npm init -y
     - name: npm install, build, and test
       run: |
         npm install
