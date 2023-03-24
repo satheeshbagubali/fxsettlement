@@ -41,7 +41,7 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
-        cache-dependency-path: $(Build.SourcesDirectory)/my-app/package-lock.json
+        cache-dependency-path: ./my-app/package-lock.json
 
     - name: npm install, build, and test
       run: |
