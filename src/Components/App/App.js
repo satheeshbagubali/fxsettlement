@@ -13,6 +13,7 @@ import Box from "@material-ui/core/Box";
 import { Grid, Paper } from "@material-ui/core";
 import Form from "./FXTicket";
 
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -60,19 +61,25 @@ export default function App() {
   }
     async function fetchData() {
         //Fetch data
+        console.log("fetchim");
+
         const response = await fetch(
-            "http://dltsettlement.centralindia.cloudapp.azure.com/listCurrencyPairs"
-            //"https://dltfxsettlements.azurewebsites.net/TransactionService/listCurrencyPairs"
-            //"https://dltfxsettlements.azurewebsites.net/TransactionService/CurrencyList"
+            "https://dltfxsettlements.azurewebsites.net/TransactionService/listCurrencyPairs",
         );
+        console.log("fetchid");
         const responseVal = await response.json()
+        console.log(responseVal);
+        console.log("fetchidsss");
         
         let dropOptions = [{ key: "Select a Currency", value: "Select a Currency" }]
-        if (responseVal && responseVal['content']) {
-            const content = JSON.parse(responseVal['content'])
-            if (content && content.response) {
+        //if (responseVal && responseVal['content']) {
+          if (responseVal ) {
+            //const content = JSON.parse(responseVal['content'])
+            
+            //if (content && content.response) {
 
-                const data = content.response;
+              //  const data = content.response;
+                const data = responseVal;
                 const results = [];
                 // Store results in the results array
                 data.forEach((value) => {
@@ -83,13 +90,14 @@ export default function App() {
                 });
                 dropOptions = [...dropOptions, ...results]
 
-            }
+            //}
         }
         setOptions(dropOptions);
     }
 
     useEffect(() => {
         // Trigger the fetch
+        
         fetchData();
     }, []);
     console.log(options)
@@ -125,6 +133,7 @@ export default function App() {
         Settlement Details
         <div className="App">
           <DataTable />
+          
         </div>
           </TabPanel>
     </div>
