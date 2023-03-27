@@ -22,10 +22,10 @@ const columns: GridColDef[] = [
 
   },
   {
-    field: 'title',
+    field: 'tradeId',
     headerClassName: 'table-header-background-color',
     headerAlign: 'center',
-    headerName: 'Title' ,
+    headerName: 'Trade ID' ,
     type: 'string',
     width: 300 ,
     cellClassName: (params: GridCellParams<string>) =>
@@ -36,13 +36,35 @@ const columns: GridColDef[] = [
 
   },
   {
-    field: 'body',
+    field: 'product',
     headerClassName: 'table-header-background-color',
     headerAlign: 'center',
-    headerName: 'Body' ,
+    headerName: 'Product' ,
+    width: 600 
+  },
+  {
+    field: 'executionPrice',
+    headerClassName: 'table-header-background-color',
+    headerAlign: 'center',
+    headerName: 'Execution Price' ,
+    width: 600 
+  },
+  {
+    field: 'spotPrice',
+    headerClassName: 'table-header-background-color',
+    headerAlign: 'center',
+    headerName: 'Spot Price' ,
+    width: 600 
+  },
+  {
+    field: 'settlement_date',
+    headerClassName: 'table-header-background-color',
+    headerAlign: 'center',
+    headerName: 'Settlement Date' ,
     width: 600 
   },
 
+  
 ];
 
 
@@ -163,8 +185,7 @@ const DataTable = () => {
   const [deletedRows, setDeletedRows] = useState([]);
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/posts")
-    //fetch("https://dltfxsettlements.azurewebsites.net/TransactionService/listUnsettledTrades")
+    fetch("https://dltfxsettlements.azurewebsites.net/TransactionService/getTradeByStatus")
       .then((data) => data.json())
       
       .then((data) => setTableData(data))

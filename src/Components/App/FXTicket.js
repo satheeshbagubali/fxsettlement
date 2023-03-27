@@ -15,13 +15,30 @@ import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import InputLabel from "@mui/material/InputLabel";
 import FormLabel from "@mui/material/FormLabel";
-const defaultValues = {
-  counterparty: "",
-};
+const defaultValues = {};
 
 const Form = (props) => {
   const { options } = props;
+  const defaultDateValue = new Date().toLocaleDateString("en-CA");
+  console.log(options);
+  const defaultValues = {
+    currencyPair:
+      options?.find((option) => option.key === "USD/EUR")?.value ?? "USD/EUR",
+    product:
+    options?.find((option) => option.key === "FX Spot")?.value ?? "FX Spot",
+    settlement_date: defaultDateValue,
+    execution_date: defaultDateValue,
+    counterParty: "JP Morgan Chase",
+    executionVenue: "Bloomberg",
+    pricing: "Algo",
+    status: "Initiated",
+    liquidityProvider: "Bloomberg",
+    legalEntity: "Silicon Vault Bank NA",
+    salesDesk: "SVBNA",
+  };
   const [formValues, setFormValues] = useState(defaultValues);
+  console.log(formValues);
+  console.log(formValues["dealerSide"]);
   const [alert, setAlert] = useState(false);
   const handleInputChange = (
     e,
@@ -29,77 +46,76 @@ const Form = (props) => {
     fieldName = "",
     fieldValue = ""
   ) => {
-    const { name, value } = e.target;
-    if (!isfieldChange) {
-      setFormValues({
-        ...formValues,
-        [name]: value,
-      });
-    } else {
-      setFormValues({
-        ...formValues,
-        [name]: value,
-        [fieldName]: fieldValue,
-      });
-    }
+    const { name, value, type } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: type === "number" ? Number(value) : value,
+    });
   };
-  //const handleCurrencyInputChange = async (e) => {
-//    const { value } = e.target;
-  //};
 
   const clearFormValue = () => {
     setFormValues({});
   };
 
-  const tradeobject = [
-    {
-      "tradeId" : "TR125",
-      "product" : "product5",
-      "executionPrice" : "1000",
-      "spotPrice" : "1200",
-      "settlement_date" : "2023-03-01",
-      "counterParty" : "counterParty5",
-      "counterPartyFullName" : "counterPartyFullName5",
-      "execution_date" : "2023-03-01",
-      "pricing" : "pricing",
-      "executionVenue" : "executionVenue",
-      "salesDesk" : "salesDesk",
-      "liquidityProvider" : "liquidityProvider",
-      "book" : "book",
-      "legalEntity" : "legalEntity",
-      "status" : "status1"
-      }
-  ]
+  const tradeobject = {
+    tradeId: "TR125",
+    product: "product5",
+    executionPrice: 1000,
+    spotPrice: 1200,
+    settlement_date: "2023-03-01",
+    counterParty: "counterParty5",
+    counterPartyFullName: "counterPartyFullName5",
+    execution_date: "2023-03-01",
+    pricing: "Algo",
+    executionVenue: "Bloomberg",
+    salesDesk: "salesDesk",
+    liquidityProvider: "liquidityProvider",
+    book: "book",
+    legalEntity: "legalEntity",
+    status: "Initiated",
+  };
 
+  const handleCurrencyInputChange = async (e) => {
+    const { value } = e.target;
+    const response = await fetch(
+      `https://dltfxsettlements.azurewebsites.net/TransactionService/listCurrencyPairs?currency_pair=${value}`
+    );
+    const responseVal = await response.json();
+    if (responseVal && responseVal["content"]) {
+      const content = JSON.parse(responseVal["content"]);
+      if (content && content.response) {
+        const data = content.response;
+        if (data) handleInputChange(e, true, "spotPrice", data[0].c); // need to update based on the proper field name for precision in api response
+      }
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(JSON.stringify({ formValues }));
     try {
-      
-      const responseVal = formValues;
-      console.log(responseVal);
+      const dealerSide = formValues["dealerSide"];
+      const responseVal = {
+        ...formValues,
+        clientSide: dealerSide === "buy" ? "sell" : "buy",
+      };
+      console.log(JSON.stringify({ formValues }));
+      console.log(JSON.stringify({ responseVal }));
+
       console.log(tradeobject);
-      console.log( typeof(tradeobject) );
+      console.log(JSON.stringify({ tradeobject }));
 
       let res = await fetch(
         "https://dltfxsettlements.azurewebsites.net/TransactionService/submitTrade",
         {
           method: "POST",
-          //body: JSON.stringify({ tradeobject }),
-          body:  tradeobject ,
-          config: {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json; charset=utf-8'
-        }
-    }
-          //body : responseVal,
+          body: JSON.stringify(responseVal),
+          headers: { "Content-Type": "application/json; charset=utf-8" },
         }
       );
+
       let resJson = await res.json();
-      console.log(res);
+
       if (res.status === 200) {
         //alert(JSON.stringify(resJson));
         console.log("works");
@@ -145,8 +161,8 @@ const Form = (props) => {
   }
 
   return (
-    <div class="container">
-      <h1>FX Trade Details</h1>
+    <div id="formClass" class="containerSVB">
+      <b>FX Trade Details</b>
       {alert && (
         <Alert onClose={closeAlert} severity="success">
           Trade Details submitted successfully.
@@ -155,20 +171,30 @@ const Form = (props) => {
       <form onSubmit={handleSubmit}>
         <div class="form-group">
           <Grid container alignItems="center" direction="column">
-           <Grid item>
+          <Grid item>
               <FormControl>
-              <TextField
-                id="prodcut-input"
-                name="product"
-                label="Product"
-                variant="outlined"
-                value={formValues.product}
-                onChange={handleInputChange}
-                style={{ width: "250px", margin: "10px" }}
-              />          
+                <InputLabel id="product-label">Product</InputLabel>
+                <Select
+                  labelId="Product-label"
+                  id="Product_id"
+                  name="product"
+                  variant="outlined"
+                  label="Product"
+                  defaultValue={"FX Spot"}
+                  onChange={handleInputChange}
+                  style={{ width: "250px", margin: "10px" }}
+                >
+                  <MenuItem key="FX Spot" value="FX Spot">
+                  FX Spot
+                  </MenuItem>
+                  <MenuItem key="FX Forward" value="FX Forward">
+                  FX Forward
+                  </MenuItem>
+                    </Select>
               </FormControl>
-            
-            </Grid> 
+            </Grid>
+
+
             <Grid item>
               <FormControl>
                 <InputLabel id="counterparty-label">Counter Party</InputLabel>
@@ -178,47 +204,34 @@ const Form = (props) => {
                   name="counterparty"
                   variant="outlined"
                   label="Counter Party"
-                  value={formValues.counterparty ?? "Select Counter Party"}
+                  defaultValue={"JP Morgan Chase"}
+                  //value={formValues.counterParty ?? "Select Counter Party"}
                   onChange={handleInputChange}
                   style={{ width: "250px", margin: "10px" }}
                 >
-                  <MenuItem key="JPMC" value="JPMC">
-                    JPMC
+                  <MenuItem key="JPMC" value="JP Morgan Chase">
+                    JP Morgan Chase
                   </MenuItem>
                   <MenuItem key="Barclays" value="Barclays">
                     Barclays
                   </MenuItem>
                   <MenuItem key="UBS" value="UBS">
-                    UBS
+                    Union Bank of Switzerland
                   </MenuItem>
                   <MenuItem key="BOA" value="BOA">
-                    BOA
+                    Bank of America
                   </MenuItem>
                 </Select>
               </FormControl>
             </Grid>
 
-            <Grid item>
-              <TextField
-                id="cpfullname_id"
-                name="cpfullname"
-                labelId="cpfullname-label"
-                label="CP Full Name"
-                variant="outlined"
-                onChange={handleInputChange}
-                style={{ width: "250px", margin: "10px" }}
-              />
-            </Grid>
-
             <Grid>
               <FormControl>
                 <table>
-                  <FormLabel id="buysell-label">Buy/Sell</FormLabel>
                   <tr>
                     <RadioGroup
                       row
-                      defaultValue="buy"
-                      name="buysell"
+                      name="dealerSide"
                       onChange={handleInputChange}
                       aria-labelledby="buysell-label"
                       style={{ width: "225px", margin: "10px" }}
@@ -248,10 +261,10 @@ const Form = (props) => {
                 <Select
                   id="curp"
                   labelId="curp-label"
-                  name="currencypair"
+                  name="currencyPair"
                   variant="outlined"
                   label="Currency Pair"
-                  value={formValues.currencypair ?? "Select a Currency Pair"}
+                  value={formValues.currencyPair ?? "Select a Currency Pair"}
                   onChange={handleInputChange}
                   style={{ width: "250px", margin: "10px" }}
                 >
@@ -265,184 +278,173 @@ const Form = (props) => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item>
+            <FormControl>
               <TextField
-                id="name-input"
-                name="notional"
-                label="Notional"
+                id="valuedate-input"
+                name="settlement_date"
+                label="Settlement Date"
+                type="date"
+                variant="outlined"
+                value={formValues.valuedate}
+                defaultValue={new Date().toLocaleDateString("en-CA")}
+                onChange={handleInputChange}
+                style={{ width: "250px", margin: "10px" }}
+              />
+            </FormControl>
+          </Grid>
+          <div id="spotDIV" display="none">
+            <Grid item container alignItems="center" direction="column">
+              <TextField
+                id="name-spotrate"
+                name="spotPrice"
+                label="Spot Price"
                 type="number"
                 variant="outlined"
-                value={formValues.notional}
                 onChange={handleInputChange}
                 style={{ width: "250px", margin: "10px" }}
               />
             </Grid>
+          </div>
+          <Grid item container alignItems="center" direction="column">
             <TextField
-              id="valuedate-input"
-              name="settlement_date"
-              placeholder="Settlement Date"
-              type="date"
+              id="name-executionprice"
+              name="executionPrice"
+              label="Execution Price"
+              type="number"
               variant="outlined"
-              defaultValue={new Date().toLocaleDateString("en-CA")}
-              value={formValues.valuedate}
               onChange={handleInputChange}
               style={{ width: "250px", margin: "10px" }}
             />
           </Grid>
-          <Grid container alignItems="center" direction="column">
-            <FormControl>
-              <FormLabel id="spotforward-label">Spot/Forward</FormLabel>
-              <RadioGroup
-                row
-                defaultValue="spot"
-                name="spotforward"
-                onChange={handleInputChange}
-                aria-labelledby="spotforward-label"
-                style={{ width: "225px", margin: "10px" }}
-              >
-                <FormControlLabel
-                  onClick={handleShowSpot}
-                  value="spot"
-                  control={<Radio />}
-                  label="Spot"
-                />
-                <FormControlLabel
-                  onClick={handleShowForward}
-                  value="forward"
-                  control={<Radio />}
-                  label="Forward"
-                />
-              </RadioGroup>
-            </FormControl>
-            <div id="spotDIV" display="none">
-              <Grid item>
-                <TextField
-                  id="name-spotrate"
-                  name="spotprice"
-                  label="Spot Price"
-                  type="number"
-                  variant="outlined"
-                  value={formValues.spotrate}
-                  onChange={handleInputChange}
-                  style={{ width: "250px", margin: "10px" }}
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  id="cpprice-input"
-                  name="cpprice"
-                  label="Counterparty Price"
-                  type="number"
-                  variant="outlined"
-                  value={formValues.cpprice}
-                  onChange={handleInputChange}
-                  style={{ width: "250px", margin: "10px" }}
-                />
-              </Grid>
-            </div>
-            <div id="forwardDIV" hidden>
-              <Grid item>
-                <TextField
-                  id="fwdprice-input"
-                  name="fwdprice"
-                  label="Forward Price"
-                  type="number"
-                  variant="outlined"
-                  value={formValues.fwdprice}
-                  onChange={handleInputChange}
-                  style={{ width: "250px", margin: "10px" }}
-                />
-              </Grid>
 
-              <Grid item>
-                <TextField
-                  id="cpfwdprice-input"
-                  name="cpfwdprice"
-                  label="CP Forward Price"
-                  type="number"
-                  variant="outlined"
-                  value={formValues.cpfwdprice}
-                  onChange={handleInputChange}
-                  style={{ width: "250px", margin: "10px" }}
-                />
-              </Grid>
-            </div>
-            <Grid item>
-                <TextField
-                  id="name-executionprice"
-                  name="executionprice"
-                  label="Execution Price"
-                  type="number"
-                  variant="outlined"
-                  value={formValues.spotrate}
-                  onChange={handleInputChange}
-                  style={{ width: "250px", margin: "10px" }}
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  id="name-pricing"
-                  name="pricing"
-                  label="Pricing"
-                  type="number"
-                  variant="outlined"
-                  value={formValues.spotrate}
-                  onChange={handleInputChange}
-                  style={{ width: "250px", margin: "10px" }}
-                />
-              </Grid>
-
-            <Grid item>
+          <Grid item container alignItems="center" direction="column">
               <TextField
+                id="name-amount"
+                name="amount"
+                label="Amount"
+                type="number"
+                variant="outlined"
+                onChange={handleInputChange}
+                style={{ width: "250px", margin: "10px" }}
+              />
+            </Grid>
+
+
+          <Grid item container alignItems="center" direction="column">
+            <FormControl>
+              <TextField
+                id="executiondate-input"
+                name="execution_date"
+                label="Execution Date"
+                type="date"
+                variant="outlined"
+                value={formValues.execution_date}
+                onChange={handleInputChange}
+                style={{ width: "250px", margin: "10px" }}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item container alignItems="center" direction="column">
+            <FormControl>
+              <InputLabel id="pricing-label">Pricing</InputLabel>
+              <Select
+                labelId="pricing-label"
+                id="pricing_id"
+                name="pricing"
+                variant="outlined"
+                label="Pricing"
+                value={formValues.pricing ?? "Select Pricing"}
+                onChange={handleInputChange}
+                style={{ width: "250px", margin: "10px" }}
+              >
+                <MenuItem key="Algo" value="Algo">
+                  Algo
+                </MenuItem>
+                <MenuItem key="Manual" value="Manual">
+                  Manual
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item container alignItems="center" direction="column">
+            <FormControl>
+              <InputLabel id="executionid-label">Execution Venue</InputLabel>
+              <Select
+                labelId="execution-label"
                 id="executionVenue_id"
                 name="executionVenue"
-                labelId="executionVenue-label"
+                variant="outlined"
                 label="Execution Venue"
-                variant="outlined"
+                value={formValues.executionVenue ?? "Select Execution Venue"}
                 onChange={handleInputChange}
                 style={{ width: "250px", margin: "10px" }}
-              />
-            </Grid>
+              >
+                <MenuItem key="Bloomberg" value="Bloomberg">
+                  Bloomberg
+                </MenuItem>
+                <MenuItem key="Off" value="Off">
+                  Off
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item container alignItems="center" direction="column">
+            <TextField
+              id="liquidityProvider_id"
+              name="liquidityProvider"
+              labelId="liquidityProvider-label"
+              label="Liquidity Provider"
+              variant="outlined"
+              defaultValue="Bloomberg"
+              onChange={handleInputChange}
+              style={{ width: "250px", margin: "10px" }}
+            />
+          </Grid>
+          <Grid item container alignItems="center" direction="column">
+            <TextField
+              id="book_id"
+              name="book"
+              labelId="book-label"
+              label="Book"
+              variant="outlined"
+              onChange={handleInputChange}
+              style={{ width: "250px", margin: "10px" }}
+            />
+          </Grid>
 
-            <Grid item>
+          <Grid item container alignItems="center" direction="column">
+            <FormControl>
               <TextField
-                id="book_id"
-                name="book"
-                labelId="book-label"
-                label="Book"
-                variant="outlined"
-                onChange={handleInputChange}
-                style={{ width: "250px", margin: "10px" }}
-              />
-            </Grid>
-
-            <Grid item>
-              <TextField
-                id="legalentity_id"
-                name="legalentity"
-                labelId="legalentity-label"
+                id="legalEntity_id"
+                name="legalEntity"
+                labelId="legalEntity-label"
                 label="Legal Entity"
                 variant="outlined"
+                defaultValue="Silicon Vault Bank NA"
                 onChange={handleInputChange}
                 style={{ width: "250px", margin: "10px" }}
               />
-            </Grid>
-
-            <Grid item>
-              <TextField
-                id="salesdesk_id"
-                name="salesdesk"
-                labelId="salesdesk-label"
-                label="Sales Desk"
-                variant="outlined"
-                onChange={handleInputChange}
-                style={{ width: "250px", margin: "10px" }}
-              />
-            </Grid>
-
-            <Button variant="contained" color="primary" type="submit">
-              Submit
-            </Button>
+            </FormControl>
+          </Grid>
+          <Grid item container alignItems="center" direction="column">
+            <TextField
+              id="salesdesk_id"
+              name="salesDesk"
+              labelId="salesdesk-label"
+              label="Sales Desk"
+              variant="outlined"
+              defaultValue="SVBNA"
+              onChange={handleInputChange}
+              style={{ width: "250px", margin: "10px" }}
+            />
+          </Grid>
+          <Grid alignItems="center" direction="column">
+            <FormControl>
+              <Button variant="contained" color="primary" type="submit">
+                Submit
+              </Button>
+            </FormControl>
           </Grid>
           <Snackbar open={alert} autoHideDuration={10000} onClose={closeAlert}>
             <Alert onClose={closeAlert} severity="success">

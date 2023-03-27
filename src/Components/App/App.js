@@ -13,7 +13,6 @@ import Box from "@material-ui/core/Box";
 import { Grid, Paper } from "@material-ui/core";
 import Form from "./FXTicket";
 
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -50,6 +49,25 @@ const useStyles = makeStyles((theme) => ({
     width: "80%",
     backgroundColor: theme.palette.background.paper,
   },
+  svb: {
+    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    border: 0,
+    borderRadius: 3,
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    color: 'white',
+    height: 48,
+    padding: '0 30px',
+  },
+  Wells: {
+    background: 'grey',
+    border: 0,
+    borderRadius: 3,
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    color: 'white',
+    height: 48,
+    padding: '0 30px',
+  },
+
 }));
 
 export default function App() {
@@ -59,14 +77,16 @@ export default function App() {
   function handleChange(event, newValue) {
     setValue(newValue);
   }
-    async function fetchData() {
+    
+  async function fetchData() {
         //Fetch data
         console.log("fetchim");
-
-        const response = await fetch(
-            "https://dltfxsettlements.azurewebsites.net/TransactionService/listCurrencyPairs",
-        );
+        
+      const response = await fetch(
+          "https://dltfxsettlements.azurewebsites.net/TransactionService/listCurrencyPairs",
+      );
         console.log("fetchid");
+        
         const responseVal = await response.json()
         console.log(responseVal);
         console.log("fetchidsss");
@@ -84,7 +104,7 @@ export default function App() {
                 // Store results in the results array
                 data.forEach((value) => {
                     results.push({
-                        key: value.name,
+                        key: value.symbol,
                         value: value.symbol,
                     });
                 });
@@ -94,15 +114,48 @@ export default function App() {
         }
         setOptions(dropOptions);
     }
+    
+    function setSiteLabel()
+    {
+      const siteFor ="SVB";
+      if(siteFor=="SVB")
+      {
+        var x = document.getElementById("sitelabel");
+        x.textContent =siteFor;
+        var x = document.getElementById("bgDiv");
+        console.log(classes.SVB);
+        x.className =classes.SVB;
+
+      }
+      else if(siteFor=="Wells")
+      {
+        var x = document.getElementById("sitelabel");
+        x.textContent =siteFor;
+        var x = document.getElementById("bgDiv");
+        x.className =classes.Wells;
+
+      }
+      else
+      {
+        var x = document.getElementById("sitelabel");
+        x.textContent =siteFor;
+        var x = document.getElementById("bgDiv");
+        x.className =classes.root;
+
+      }
+      
+
+    }
 
     useEffect(() => {
         // Trigger the fetch
-        
+        setSiteLabel();
         fetchData();
     }, []);
     console.log(options)
   return (
-    <div className={classes.root}>
+    <div id="bgDiv" className={classes.svb} >
+      <h1 id="sitelabel">Wells Cargo Bank</h1>
       <AppBar position="static" color="default">
         <Tabs
           value={value}
@@ -119,7 +172,6 @@ export default function App() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-              <b>trade ticket</b>
               {options && options.length > 0 && (<Form options ={options} />)}
               
       </TabPanel>

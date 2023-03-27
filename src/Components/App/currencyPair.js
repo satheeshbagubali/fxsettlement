@@ -11580,3 +11580,10 @@ export const currencyPairList = [
     symbol: "USD/AFN",
   },
 ];
+
+
+export const siteLabelFor = [
+  {
+    name: "SVB",
+  },
+]
