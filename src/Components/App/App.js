@@ -121,7 +121,7 @@ export default function App() {
       if(siteFor=="SVB")
       {
         var x = document.getElementById("sitelabel");
-        x.textContent =siteFor;
+        x.textContent ="Silicon Valley Bank";
         var x = document.getElementById("bgDiv");
         console.log(classes.SVB);
         x.className =classes.SVB;
@@ -155,7 +155,10 @@ export default function App() {
     console.log(options)
   return (
     <div id="bgDiv" className={classes.svb} >
-      <h1 id="sitelabel">Wells Cargo Bank</h1>
+      <table width="100%"><tr><td colspan="12">
+      <h1 id="sitelabel">Wells Cargo Bank</h1></td>
+      <td align="center"><b>Welcome Ramesh!</b></td></tr></table>
+      
       <AppBar position="static" color="default">
         <Tabs
           value={value}
@@ -166,23 +169,21 @@ export default function App() {
           scrollButtons="auto"
           aria-label="scrollable auto tabs example"
         >
-          <Tab label="Trade ticket" {...a11yProps(0)} />
-          <Tab label="Counterparty Transactions" {...a11yProps(1)} />
-          <Tab label="Settlements" {...a11yProps(2)} />
+          <Tab label="Front Office" {...a11yProps(0)} />
+          <Tab label="Back Office" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
+        <br></br>
+      <p align="center"><b>      Sales Trader Workstation </b></p>
+      
               {options && options.length > 0 && (<Form options ={options} />)}
               
       </TabPanel>
+      <br></br>
       <TabPanel value={value} index={1}>
-        Counterparty Transactions
-        <div className="App">
-          <DataTable />
-        </div>
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Settlement Details
+        <p align="center"><b>Backoffice --> Settlement Details</b></p>
+        <br></br>
         <div className="App">
           <DataTable />
           

@@ -57,7 +57,7 @@ h1:after {
   right: 0;
   bottom: 0;
   left: 0;
-  background-image: linear-gradient(to bottom, transparent 0px, transparent 100px, white 1px, white 2px), linear-gradient(to right, transparent 0px, transparent 1px, white 1px, rgb(197, 168, 25) 2px);
+  background-image: linear-gradient(to bottom, transparent 0px, transparent 100px, white 1px, white 2px), linear-gradient(to right, transparent 0px, transparent 1px, rgb(101, 179, 116) 1px, rgb(25, 197, 82) 2px);
   background-size: 2px 2px;
   
   pointer-events: none;
@@ -110,7 +110,7 @@ body {
 }
 .containerSVB {
   position: relative;
-  max-width: 40rem;
+  max-width:70rem;
   margin: 2rem auto;
   background: #70c277;
   width: 100%;
@@ -142,7 +142,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  box-shadow: 0 10px 20px 1px rgba(13, 207, 13, 0.14), 0 3px 14px 2px rgba(24, 175, 7, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 20px 1px rgba(120, 207, 13, 0.14), 0 3px 14px 2px rgba(24, 175, 7, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
   -webkit-transform: scale(0.98);
           transform: scale(0.98);
   -webkit-transition: -webkit-transform 0.28s ease-in-out;
@@ -156,141 +156,6 @@ body {
           transform: scale(1);
 }
 
-fieldset {
-  margin: 0 0 3rem;
-  padding: 0;
-  border: none;
-}
-
-.form-radio,
-.form-group {
-  position: relative;
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
-}
-
-.form-inline > .form-group,
-.form-inline > .btn {
-  display: inline-block;
-  margin-bottom: 0;
-}
-
-.form-help {
-  margin-top: 0.125rem;
-  margin-left: 0.125rem;
-  color: #a40a0a;
-  font-size: 0.8rem;
-}
-.checkbox .form-help, .form-radio .form-help, .form-group .form-help {
-  position: absolute;
-  width: 100%;
-}
-.checkbox .form-help {
-  position: relative;
-  margin-bottom: 1rem;
-}
-.form-radio .form-help {
-  padding-top: 0.25rem;
-  margin-top: -1rem;
-}
-
-.form-group input {
-  height: 3rem;
-}
-.form-group textarea {
-  resize: none;
-}
-.form-group .control-label {
-  position: absolute;
-  top: 0.25rem;
-  pointer-events: none;
-  padding-left: 0.125rem;
-  z-index: 1;
-  color: #800e0e;
-  font-size: 1rem;
-  font-weight: normal;
-  -webkit-transition: all 0.28s ease;
-  transition: all 0.28s ease;
-}
-.form-group .bar {
-  position: relative;
-  border-bottom: 0.0625rem solid #8a0b0b;
-  display: block;
-}
-.form-group .bar::before {
-  content: '';
-  height: 0.125rem;
-  width: 0;
-  left: 50%;
-  bottom: -0.0625rem;
-  position: absolute;
-  background: #b73333;
-  -webkit-transition: left 0.28s ease, width 0.28s ease;
-  transition: left 0.28s ease, width 0.28s ease;
-  z-index: 2;
-}
-.form-group input,
-.form-group textarea {
-  display: block;
-  background: none;
-  padding: 0.125rem 0.125rem 0.0625rem;
-  font-size: 1rem;
-  border-width: 0;
-  border-color: transparent;
-  line-height: 1.9;
-  width: 100%;
-  color: transparent;
-  -webkit-transition: all 0.28s ease;
-  transition: all 0.28s ease;
-  box-shadow: none;
-}
-.form-group input[type="file"] {
-  line-height: 1;
-}
-.form-group input[type="file"] ~ .bar {
-  display: none;
-}
-.form-group select,
-.form-group input:focus,
-.form-group input:valid,
-.form-group input.form-file,
-.form-group input.has-value,
-.form-group textarea:focus,
-.form-group textarea:valid,
-.form-group textarea.form-file,
-.form-group textarea.has-value {
-  color: #7a0505;
-}
-.form-group select ~ .control-label,
-.form-group input:focus ~ .control-label,
-.form-group input:valid ~ .control-label,
-.form-group input.form-file ~ .control-label,
-.form-group input.has-value ~ .control-label,
-.form-group textarea:focus ~ .control-label,
-.form-group textarea:valid ~ .control-label,
-.form-group textarea.form-file ~ .control-label,
-.form-group textarea.has-value ~ .control-label {
-  font-size: 0.8rem;
-  color: rgb(208, 19, 44);
-  top: -1rem;
-  left: 0;
-}
-.form-group select:focus,
-.form-group input:focus,
-.form-group textarea:focus {
-  outline: none;
-}
-.form-group select:focus ~ .control-label,
-.form-group input:focus ~ .control-label,
-.form-group textarea:focus ~ .control-label {
-  color: #b73333;
-}
-.form-group select:focus ~ .bar::before,
-.form-group input:focus ~ .bar::before,
-.form-group textarea:focus ~ .bar::before {
-  width: 100%;
-  left: 0;
-}
 
 .gridHeader
 {
@@ -304,5 +169,14 @@ fieldset {
 
 .table-header-background-color
 {
-  background:#8f8f8f;
+  background:#68b780;
 } 
+
+table, th, td {
+  border: 1px solid rgb(140, 140, 70);
+  border-collapse: collapse;
+}
+th, td {
+  background-color: #96d496;
+  padding: 10px;
+}

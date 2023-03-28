@@ -7,27 +7,12 @@ import { clsx } from 'clsx'
 
 const columns: GridColDef[] = [
   {
-    field: 'id',
-    headerClassName: 'table-header-background-color',
-    headerAlign: 'center',
-    headerName: 'ID' ,
-    type: 'number',
-    width: 100 ,
-
-    cellClassName: (params: GridCellParams<number>) =>
-    clsx('gridHeader', {
-      gridHeader: params.value < 0,
-      gridaltHeader: params.value > 4,
-    }),
-
-  },
-  {
     field: 'tradeId',
     headerClassName: 'table-header-background-color',
     headerAlign: 'center',
     headerName: 'Trade ID' ,
     type: 'string',
-    width: 300 ,
+    width: 200 ,
     cellClassName: (params: GridCellParams<string>) =>
     clsx('gridHeader2', {
       gridHeader: params.value == 'qui est esse',
@@ -40,30 +25,68 @@ const columns: GridColDef[] = [
     headerClassName: 'table-header-background-color',
     headerAlign: 'center',
     headerName: 'Product' ,
-    width: 600 
+    width: 200 
   },
+  {
+    field: 'counterParty',
+    headerClassName: 'table-header-background-color',
+    headerAlign: 'center',
+    headerName: 'Counter Party' ,
+    width: 200 
+  },
+  {
+    field: 'dealerSide',
+    headerClassName: 'table-header-background-color',
+    headerAlign: 'center',
+    headerName: 'Trade Side' ,
+    width: 200 
+  },
+  {
+    field: 'amount',
+    headerClassName: 'table-header-background-color',
+    headerAlign: 'center',
+    headerName: 'Amount' ,
+    width: 200 
+  },  
   {
     field: 'executionPrice',
     headerClassName: 'table-header-background-color',
     headerAlign: 'center',
     headerName: 'Execution Price' ,
-    width: 600 
+    width: 200 
   },
   {
     field: 'spotPrice',
     headerClassName: 'table-header-background-color',
     headerAlign: 'center',
     headerName: 'Spot Price' ,
-    width: 600 
+    width: 200 
+  },
+  {
+    field: 'status',
+    headerClassName: 'table-header-background-color',
+    headerAlign: 'center',
+    headerName: 'Trade Status' ,
+    width: 200 
+  },
+  
+  {
+    field: 'salesDesk',
+    headerClassName: 'table-header-background-color',
+    headerAlign: 'center',
+    headerName: 'Sales Desk' ,
+    width: 200 
   },
   {
     field: 'settlement_date',
     headerClassName: 'table-header-background-color',
     headerAlign: 'center',
     headerName: 'Settlement Date' ,
-    width: 600 
+    width: 300 
   },
+  
 
+  
   
 ];
 
@@ -199,7 +222,7 @@ const DataTable = () => {
       <StyledDataGrid
         rows={tableData}
         columns={columns}
-        getRowClassName={(params) => `super-app-theme--${params.row.id}`}
+        //getRowClassName={(params) => `super-app-theme--${params.row.id}`}
         pageSize={10}
         checkboxSelection
         onSelectionModelChange={({ selectionModel }) => {

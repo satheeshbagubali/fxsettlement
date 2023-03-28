@@ -29,12 +29,13 @@ const Form = (props) => {
     settlement_date: defaultDateValue,
     execution_date: defaultDateValue,
     counterParty: "JP Morgan Chase",
-    executionVenue: "Bloomberg",
-    pricing: "Algo",
+    executionVenue: "XOFF",
+    pricing: "Manual",
     status: "Initiated",
     liquidityProvider: "Bloomberg",
     legalEntity: "Silicon Vault Bank NA",
     salesDesk: "SVBNA",
+    book :"EM01",
   };
   const [formValues, setFormValues] = useState(defaultValues);
   console.log(formValues);
@@ -162,7 +163,8 @@ const Form = (props) => {
 
   return (
     <div id="formClass" class="containerSVB">
-      <b>FX Trade Details</b>
+      <p align="center"><b>FX Trade Ticket</b></p>
+      
       {alert && (
         <Alert onClose={closeAlert} severity="success">
           Trade Details submitted successfully.
@@ -170,7 +172,12 @@ const Form = (props) => {
       )}
       <form onSubmit={handleSubmit}>
         <div class="form-group">
-          <Grid container alignItems="center" direction="column">
+        <hr width  = "110%"  color = "black"/ >
+        <br></br>
+    <Grid container alignItems="center" direction="column">
+          <table border="0" bgcolor="#68b780">
+          <tr>
+           <td>
           <Grid item>
               <FormControl>
                 <InputLabel id="product-label">Product</InputLabel>
@@ -182,7 +189,7 @@ const Form = (props) => {
                   label="Product"
                   defaultValue={"FX Spot"}
                   onChange={handleInputChange}
-                  style={{ width: "250px", margin: "10px" }}
+                  style={{ width: "250px", height:"45px",  margin: "3px"}}
                 >
                   <MenuItem key="FX Spot" value="FX Spot">
                   FX Spot
@@ -193,7 +200,8 @@ const Form = (props) => {
                     </Select>
               </FormControl>
             </Grid>
-
+            </td>
+            <td>
 
             <Grid item>
               <FormControl>
@@ -207,7 +215,7 @@ const Form = (props) => {
                   defaultValue={"JP Morgan Chase"}
                   //value={formValues.counterParty ?? "Select Counter Party"}
                   onChange={handleInputChange}
-                  style={{ width: "250px", margin: "10px" }}
+                  style={{ width: "250px", height:"45px",  margin: "3px"}}
                 >
                   <MenuItem key="JPMC" value="JP Morgan Chase">
                     JP Morgan Chase
@@ -224,37 +232,8 @@ const Form = (props) => {
                 </Select>
               </FormControl>
             </Grid>
-
-            <Grid>
-              <FormControl>
-                <table>
-                  <tr>
-                    <RadioGroup
-                      row
-                      name="dealerSide"
-                      onChange={handleInputChange}
-                      aria-labelledby="buysell-label"
-                      style={{ width: "225px", margin: "10px" }}
-                    >
-                      <td>
-                        <FormControlLabel
-                          value="buy"
-                          control={<Radio />}
-                          label="Buy"
-                        />
-                      </td>
-                      <td>
-                        <FormControlLabel
-                          value="sell"
-                          control={<Radio />}
-                          label="Sell"
-                        />
-                      </td>
-                    </RadioGroup>
-                  </tr>
-                </table>
-              </FormControl>
-            </Grid>
+            </td>
+            <td>
             <Grid item>
               <FormControl>
                 <InputLabel id="curp-label">Currency Pair</InputLabel>
@@ -266,7 +245,7 @@ const Form = (props) => {
                   label="Currency Pair"
                   value={formValues.currencyPair ?? "Select a Currency Pair"}
                   onChange={handleInputChange}
-                  style={{ width: "250px", margin: "10px" }}
+                  style={{ width: "250px", height:"45px",  margin: "3px"}}
                 >
                   {options?.map((option) => {
                     return (
@@ -278,6 +257,35 @@ const Form = (props) => {
                 </Select>
               </FormControl>
             </Grid>
+            </td>
+            </tr>
+            <tr>
+              <td>
+            <Grid>
+              <FormControl>
+                    <RadioGroup
+                      row
+                      name="dealerSide"
+                      onChange={handleInputChange}
+                      aria-labelledby="buysell-label"
+                      style={{ width: "225px", margin: "10px" }}
+                    >
+                        <FormControlLabel
+                          value="buy"
+                          control={<Radio />}
+                          label="Buy"
+                        />
+                        <FormControlLabel
+                          value="sell"
+                          control={<Radio />}
+                          label="Sell"
+                        />
+                    </RadioGroup>
+              </FormControl>
+            </Grid>
+            </td>
+          <td>
+          <Grid>    
             <FormControl>
               <TextField
                 id="valuedate-input"
@@ -288,48 +296,13 @@ const Form = (props) => {
                 value={formValues.valuedate}
                 defaultValue={new Date().toLocaleDateString("en-CA")}
                 onChange={handleInputChange}
-                style={{ width: "250px", margin: "10px" }}
+                style={{ width: "250px", height:"45px",  margin: "3px"}}
               />
             </FormControl>
+            
           </Grid>
-          <div id="spotDIV" display="none">
-            <Grid item container alignItems="center" direction="column">
-              <TextField
-                id="name-spotrate"
-                name="spotPrice"
-                label="Spot Price"
-                type="number"
-                variant="outlined"
-                onChange={handleInputChange}
-                style={{ width: "250px", margin: "10px" }}
-              />
-            </Grid>
-          </div>
-          <Grid item container alignItems="center" direction="column">
-            <TextField
-              id="name-executionprice"
-              name="executionPrice"
-              label="Execution Price"
-              type="number"
-              variant="outlined"
-              onChange={handleInputChange}
-              style={{ width: "250px", margin: "10px" }}
-            />
-          </Grid>
-
-          <Grid item container alignItems="center" direction="column">
-              <TextField
-                id="name-amount"
-                name="amount"
-                label="Amount"
-                type="number"
-                variant="outlined"
-                onChange={handleInputChange}
-                style={{ width: "250px", margin: "10px" }}
-              />
-            </Grid>
-
-
+          </td>
+          <td>
           <Grid item container alignItems="center" direction="column">
             <FormControl>
               <TextField
@@ -340,10 +313,57 @@ const Form = (props) => {
                 variant="outlined"
                 value={formValues.execution_date}
                 onChange={handleInputChange}
-                style={{ width: "250px", margin: "10px" }}
+                style={{ width: "250px", height:"45px",  margin: "3px"}}
               />
             </FormControl>
           </Grid>
+          </td>
+        </tr>
+        <tr><td>
+          <div id="spotDIV" display="none">
+            <Grid item container alignItems="center" direction="column">
+              <TextField
+                id="name-spotrate"
+                name="spotPrice"
+                label="Spot Price"
+                type="number"
+                variant="outlined"
+                onChange={handleInputChange}
+                style={{ width: "250px", height:"45px",  margin: "3px"}}
+              />
+            </Grid>
+          </div>
+          </td>
+          <td>
+          <Grid item container alignItems="center" direction="column">
+            <TextField
+              id="name-executionprice"
+              name="executionPrice"
+              label="Execution Price"
+              type="number"
+              variant="outlined"
+              onChange={handleInputChange}
+              style={{ width: "250px", height:"45px",  margin: "3px"}}
+            />
+          </Grid>
+          </td>
+           <td>         
+          <Grid item container alignItems="center" direction="column">
+              <TextField
+                id="name-amount"
+                name="amount"
+                label="Amount"
+                type="number"
+                variant="outlined"
+                onChange={handleInputChange}
+                style={{ width: "250px", height:"45px",  margin: "3px"}}
+              />
+            </Grid>
+            </td>      
+            </tr>
+          <tr>
+          <td>        
+         
           <Grid item container alignItems="center" direction="column">
             <FormControl>
               <InputLabel id="pricing-label">Pricing</InputLabel>
@@ -355,7 +375,8 @@ const Form = (props) => {
                 label="Pricing"
                 value={formValues.pricing ?? "Select Pricing"}
                 onChange={handleInputChange}
-                style={{ width: "250px", margin: "10px" }}
+                
+                style={{ width: "250px", height:"45px",  margin: "3px"}}
               >
                 <MenuItem key="Algo" value="Algo">
                   Algo
@@ -366,7 +387,7 @@ const Form = (props) => {
               </Select>
             </FormControl>
           </Grid>
-
+          </td><td>       
           <Grid item container alignItems="center" direction="column">
             <FormControl>
               <InputLabel id="executionid-label">Execution Venue</InputLabel>
@@ -376,19 +397,22 @@ const Form = (props) => {
                 name="executionVenue"
                 variant="outlined"
                 label="Execution Venue"
+                defaultValue={"XOFF"}
                 value={formValues.executionVenue ?? "Select Execution Venue"}
                 onChange={handleInputChange}
-                style={{ width: "250px", margin: "10px" }}
+                style={{ width: "250px", height:"45px",  margin: "3px"}}
               >
                 <MenuItem key="Bloomberg" value="Bloomberg">
                   Bloomberg
                 </MenuItem>
-                <MenuItem key="Off" value="Off">
-                  Off
+                <MenuItem key="XOFF" value="XOFF">
+                  XOFF
                 </MenuItem>
               </Select>
             </FormControl>
           </Grid>
+          </td>
+          <td>
           <Grid item container alignItems="center" direction="column">
             <TextField
               id="liquidityProvider_id"
@@ -401,18 +425,38 @@ const Form = (props) => {
               style={{ width: "250px", margin: "10px" }}
             />
           </Grid>
+          </td>
+          </tr>
+          <tr><td>
           <Grid item container alignItems="center" direction="column">
-            <TextField
-              id="book_id"
-              name="book"
-              labelId="book-label"
-              label="Book"
-              variant="outlined"
-              onChange={handleInputChange}
-              style={{ width: "250px", margin: "10px" }}
-            />
+            <FormControl>
+              <InputLabel id="Book-label">Book</InputLabel>
+              <Select
+                labelId="book_id-label"
+                id="book_id"
+                name="book"
+                variant="outlined"
+                label="Book"
+                value={formValues.book ?? "Select Book"}
+                onChange={handleInputChange}
+                
+                style={{ width: "250px", height:"45px",  margin: "3px"}}
+              >
+                <MenuItem key="EM01" value="EM01">
+                EM01
+                </MenuItem>
+                <MenuItem key="EM02" value="EM02">
+                EM02
+                </MenuItem>
+                <MenuItem key="EM02" value="EM02">
+                EM03
+                </MenuItem>
+
+              </Select>
+            </FormControl>
           </Grid>
 
+           </td><td>       
           <Grid item container alignItems="center" direction="column">
             <FormControl>
               <TextField
@@ -427,6 +471,8 @@ const Form = (props) => {
               />
             </FormControl>
           </Grid>
+          </td>
+           <td >
           <Grid item container alignItems="center" direction="column">
             <TextField
               id="salesdesk_id"
@@ -439,13 +485,16 @@ const Form = (props) => {
               style={{ width: "250px", margin: "10px" }}
             />
           </Grid>
+          </td></tr></table>
+          <br></br>
           <Grid alignItems="center" direction="column">
             <FormControl>
-              <Button variant="contained" color="primary" type="submit">
+              <Button variant="contained" color="success" type="submit">
                 Submit
               </Button>
             </FormControl>
           </Grid>
+        </Grid>  
           <Snackbar open={alert} autoHideDuration={10000} onClose={closeAlert}>
             <Alert onClose={closeAlert} severity="success">
               Trade Details submitted successfully.
