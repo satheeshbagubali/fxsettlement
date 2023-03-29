@@ -215,7 +215,6 @@ const DataTable = () => {
 
   }, [])
 
-  console.log(tableData);
 
   return (
     <div style={{ height: 700, width: '100%' }}>
@@ -233,6 +232,7 @@ const DataTable = () => {
         }}
         
       />
+      
     </div>
   )
 }

@@ -157,7 +157,7 @@ export default function App() {
     <div id="bgDiv" className={classes.svb} >
       <table width="100%"><tr><td colspan="12">
       <h1 id="sitelabel">Wells Cargo Bank</h1></td>
-      <td align="center"><b>Welcome Ramesh!</b></td></tr></table>
+      <td align="center"><b>Welcome Satheesh!</b></td></tr></table>
       
       <AppBar position="static" color="default">
         <Tabs
@@ -176,11 +176,14 @@ export default function App() {
       <TabPanel value={value} index={0}>
         <br></br>
       <p align="center"><b>      Sales Trader Workstation </b></p>
-      
-              {options && options.length > 0 && (<Form options ={options} />)}
+      {options && options.length > 0 && (<Form options ={options} />)}
               
       </TabPanel>
+      
       <br></br>
+      
+      {value && (
+      <>
       <TabPanel value={value} index={1}>
         <p align="center"><b>Backoffice --> Settlement Details</b></p>
         <br></br>
@@ -189,6 +192,9 @@ export default function App() {
           
         </div>
           </TabPanel>
+      </>
+      )}
+      
     </div>
   );
 }

@@ -1,5 +1,5 @@
 {
- //   "appService.defaultWebAppToDeploy": "/subscriptions/a352e65d-bdb7-4429-82e6-f51bde0dccfa/resourcegroups/fxsettlementit/providers/Microsoft.Web/sites/fxsettlementit",
+    //"appService.defaultWebAppToDeploy": "/subscriptions/a352e65d-bdb7-4429-82e6-f51bde0dccfa/resourcegroups/fxsettlementit/providers/Microsoft.Web/sites/fxsettlementit",
     "appService.defaultWebAppToDeploy": "/subscriptions/a352e65d-bdb7-4429-82e6-f51bde0dccfa/resourcegroups/fxsettlementit/providers/Microsoft.Web/sites/fxsettlingsvb",
     "appService.deploySubpath": "\\build",
     "javascript.validate.enable": false,
